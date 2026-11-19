@@ -47,6 +47,14 @@
             <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="apify_api_…">
           </label>
           <label class="check"><input type="checkbox" id="remember" checked> Ține minte pe acest dispozitiv</label>
+          <label class="field">
+            <span>Scraper Apify (dacă unul nu aduce toate comentariile, încearcă altul)</span>
+            <select id="scraper">
+              <option value="clockworks~tiktok-scraper">Clockworks – TikTok Scraper (~1,25 $ / 1.000)</option>
+              <option value="clockworks~tiktok-comments-scraper">Clockworks – TikTok Comments Scraper (de la 0,50 $ / 1.000)</option>
+              <option value="apidojo~tiktok-comments-scraper">API Dojo – TikTok Comments Scraper (0,30 $ / 1.000, cere plan plătit)</option>
+            </select>
+          </label>
           <label class="field inline">
             <span>Număr maxim de comentarii de extras (controlează costul, ~1,25 $ / 1.000)</span>
             <input id="maxComments" type="number" min="50" max="20000" step="50" value="3000">

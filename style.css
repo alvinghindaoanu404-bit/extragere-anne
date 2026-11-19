@@ -88,7 +88,7 @@ main { width: min(860px, 100% - 32px); margin: 24px auto 64px; display: grid; ga
 /* ---------- form ---------- */
 .field { display: grid; gap: 6px; margin-bottom: 14px; }
 .field span { font-size: .95rem; color: var(--muted); }
-input[type="url"], input[type="text"], input[type="password"], input[type="number"], textarea {
+input[type="url"], input[type="text"], input[type="password"], input[type="number"], select, textarea {
   width: 100%; font: inherit; font-weight: 500; color: var(--ink);
   padding: 14px 18px; border-radius: 20px; border: 2px solid var(--line); background: #fff;
   outline: none; transition: border-color .2s, box-shadow .2s;
