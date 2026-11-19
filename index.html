@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giveaway Anne Maica</title>
+  <meta name="description" content="Extragerea câștigătorului din comentariile TikTok.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <img class="anne" src="assets/anne.jpg" alt="" onerror="this.remove()">
+  </div>
+
+  <header class="hero">
+    <p class="kicker">✨ TikTok Giveaway ✨</p>
+    <h1>Giveaway cu <span class="grad">Anne Maica</span></h1>
+    <p class="sub">Lipește linkul, adunăm comentariile, iar ruleta alege câștigătorul. 💜</p>
+  </header>
+
+  <main>
+    <!-- ============ SECȚIUNEA 1: EXTRAGERE ============ -->
+    <section class="card" id="extract">
+      <div class="card-head">
+        <span class="step">1</span>
+        <h2>Extrage comentariile</h2>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="auto">🔗 Din link TikTok</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="manual">📋 Manual / fișier</button>
+      </div>
+
+      <div class="pane" data-pane="auto">
+        <label class="field">
+          <span>Link videoclip TikTok</span>
+          <input id="url" type="url" inputmode="url" placeholder="https://www.tiktok.com/@cont/video/123…" autocomplete="off">
+        </label>
+        <details class="rules" id="apifyBox">
+          <summary>🔑 Cheia Apify <span id="tokenState" class="pill">lipsește</span></summary>
+          <label class="field">
+            <span>API token (din Apify → Settings → API &amp; Integrations). Rămâne doar în browserul tău și se trimite doar către Apify.</span>
+            <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="apify_api_…">
+          </label>
+          <label class="check"><input type="checkbox" id="remember" checked> Ține minte pe acest dispozitiv</label>
+          <label class="field inline">
+            <span>Număr maxim de comentarii de extras (controlează costul, ~1,25 $ / 1.000)</span>
+            <input id="maxComments" type="number" min="50" max="20000" step="50" value="3000">
+          </label>
+        </details>
+        <button class="btn primary" id="fetchBtn">Extrage comentariile 💌</button>
+        <p class="hint">Durează de obicei câteva minute pentru câteva mii de comentarii. Nu închide pagina.</p>
+      </div>
+
+      <div class="pane" data-pane="manual" hidden>
+        <label class="field">
+          <span>Lipește comentariile (o linie = un comentariu, format <code>utilizator: text</code>)</span>
+          <textarea id="paste" rows="6" placeholder="maria.popescu: Vreau și eu! 😍&#10;ioana_22: @prietena hai să participăm"></textarea>
+        </label>
+        <div class="row">
+          <button class="btn primary" id="pasteBtn">Încarcă lista</button>
+          <label class="btn ghost file">
+            Încarcă fișier JSON / CSV
+            <input id="file" type="file" accept=".json,.csv,.txt" hidden>
+          </label>
+        </div>
+      </div>
+
+      <details class="rules" open>
+        <summary>Reguli de participare</summary>
+        <label class="check"><input type="checkbox" id="unique" checked> O singură intrare per utilizator</label>
+        <label class="field inline">
+          <span>Exclude conturile (fără @, separate prin virgulă)</span>
+          <input id="exclude" type="text" value="anne.maica" placeholder="ex. anne.maica">
+        </label>
+      </details>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+
+      <div class="stats" id="stats" hidden>
+        <div><b id="statTotal">0</b><span>comentarii</span></div>
+        <div><b id="statUnique">0</b><span>participanți</span></div>
+      </div>
+      <ul class="preview" id="preview"></ul>
+    </section>
+
+    <!-- ============ SECȚIUNEA 2: GIVEAWAY ============ -->
+    <section class="card" id="draw">
+      <div class="card-head">
+        <span class="step">2</span>
+        <h2>Alege câștigătorul</h2>
+      </div>
+
+      <p class="counter"><b id="poolCount">0</b> participanți în extragere</p>
+
+      <div class="reel" id="reel">
+        <div class="pointer" aria-hidden="true"></div>
+        <div class="track" id="track"></div>
+        <p class="reel-empty" id="reelEmpty">Extrage mai întâi comentariile din secțiunea 1 ✨</p>
+      </div>
+
+      <div class="row center">
+        <button class="btn primary big" id="spinBtn" disabled>Pornește ruleta 🎀</button>
+      </div>
+
+      <div class="winner" id="winner" hidden>
+        <p class="kicker">🏆 Câștigătoarea / câștigătorul este</p>
+        <div class="winner-card">
+          <img id="wAvatar" alt="">
+          <div>
+            <p class="w-user" id="wUser"></p>
+            <p class="w-text" id="wText"></p>
+          </div>
+        </div>
+        <button class="btn ghost" id="redrawBtn">Nu răspunde? Re-extrage 🔁</button>
+        <p class="removed" id="removed"></p>
+      </div>
+    </section>
+  </main>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <script src="app.js"></script>
+</body>
+</html>
