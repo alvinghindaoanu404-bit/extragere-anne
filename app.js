@@ -115,6 +115,15 @@
     $("stats").hidden = state.comments.length === 0;
     $("statTotal").textContent = state.comments.length.toLocaleString("ro-RO");
     $("statUnique").textContent = uniqueCount.toLocaleString("ro-RO");
+    const fmt = (n) => n.toLocaleString("ro-RO");
+    const fromExcluded = state.comments.filter((c) => ex.has(c.user.toLowerCase())).length;
+    const repeats = state.comments.length - fromExcluded - uniqueCount;
+    const replies = state.comments.filter((c) => c.reply).length;
+    $("statWhy").textContent = state.comments.length
+      ? `${fmt(state.comments.length)} comentarii` +
+        (replies ? ` (${fmt(state.comments.length - replies)} principale + ${fmt(replies)} răspunsuri)` : "") +
+        ` − ${fmt(fromExcluded)} ale conturilor excluse − ${fmt(repeats)} repetate de aceiași utilizatori = ${fmt(uniqueCount)} participanți`
+      : "";
     $("poolCount").textContent = pool.length.toLocaleString("ro-RO");
     $("spinBtn").disabled = pool.length === 0 || state.spinning;
     $("reelEmpty").hidden = pool.length > 0 || $("track").children.length > 0;
