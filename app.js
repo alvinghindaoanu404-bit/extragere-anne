@@ -53,6 +53,7 @@
         user,
         text: pick(r.text, r.comment, r.content).trim(),
         avatar: pick(r.avatarThumbnail, nested.avatarThumbnail, r.avatar, nested.avatar),
+        reply: Boolean(r.repliesToId || r.replyToId || r.parentId || r.isReply),
       });
     }
     return out;
@@ -145,7 +146,9 @@
     $("track").style.transform = "translateX(0)";
     rebuildPool();
     if (state.comments.length) {
-      setStatus(`Gata! Am încărcat ${state.comments.length.toLocaleString("ro-RO")} comentarii ${source}. Treci la pasul 2 👇`, "ok");
+      const replies = state.comments.filter((c) => c.reply).length;
+      const split = replies ? ` (${(state.comments.length - replies).toLocaleString("ro-RO")} principale + ${replies.toLocaleString("ro-RO")} răspunsuri)` : "";
+      setStatus(`Gata! Am încărcat ${state.comments.length.toLocaleString("ro-RO")} comentarii${split} ${source}. Treci la pasul 2 👇`, "ok");
     } else {
       setStatus("Nu am găsit niciun comentariu valid.", "err");
     }
@@ -245,7 +248,7 @@
           resultsPerPage: 1,
           commentsPerPost: max,
           topLevelCommentsPerPost: max,
-          maxRepliesPerComment: 0,
+          maxRepliesPerComment: $("replies").checked ? max : 0,
           scrapeRelatedVideos: false,
           shouldDownloadVideos: false,
           shouldDownloadCovers: false,
